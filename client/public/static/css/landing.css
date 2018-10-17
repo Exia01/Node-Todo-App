@@ -1,0 +1,25 @@
+body {
+    padding-top: 15%;
+    text-align: center;
+    background: #0d1521;
+    font-family: Cambria;
+    color: #989898;
+}
+
+a {
+    box-shadow: 2px 2px 4px 2px lightyellow;
+    box-shadow: -1px 11px 17px -4px rgba(0, 0, 0, 0.75);
+    border-radius: 4%;
+    width: 10%;
+    margin: 0 auto;
+    padding: 10px;
+    background: lightslategray;
+    display: block;
+    color: lightgreen;
+    text-decoration: none
+}
+
+    a:hover {
+        background-color: khaki;
+        color: green;
+    }
