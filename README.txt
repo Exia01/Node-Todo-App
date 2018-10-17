@@ -1,4 +1,4 @@
-Simple Express app. 
+Simple Node/Express app. 
 
 Allows users to input a "Todo" item. 
 
