@@ -23,5 +23,6 @@
     "express-favicon": "^2.0.1",
     "mongoose": "^5.2.18",
     "mongose": "0.0.2-security"
-  }
+  },
+  "devDependencies": {}
 }
