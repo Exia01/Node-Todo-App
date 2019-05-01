@@ -26,23 +26,27 @@
         </section>
         <!-- input section -->
         <section>
-            <div class="container-fluid d-flex justify-content-center shadow-sm">
-                <div class="row">
+            <div class="container shadow-sm">
+                <div class="row ">
                     <div class="col">
-                        <h3 class="table-title">New Todo </h3>
+                        <h3 class="table-title">New Todo <span><i class="fas fa-pen-square"></i></span></h3>
                         <div id="errors">
                         </div>
-                        <form>
-                            <div class="form-inline mb-0">
-                                <input class="form-control rounded-0 " type="text" name="item" placeholder="Enter new item list" required />
-                                <button class="btn rounded-0 btn-dark" type="submit">Add</button>
-                            </div>
+                        <form class="">
+                            <div class="input-group mb-0 rounded">
+                                    <input type="text" class="form-control rounded-0"  placeholder="Enter new item list">
+                                    <div class="input-group-append">
+                                            <button class="btn rounded-0 btn-dark" type="submit">Add</button>
+                                    </div>
+                                  </div>
                         </form>
                         <!-- Items display -->
                         <div id="tasks">
                             <ul id="render">
-                                <li><span>X</span> Go to National Gallery</li>
-                                <li><span>X</span> Library trip</li>
+                                <li><span><i class="fas fa-trash"></i> </span>  Go to National Gallery</li>
+                                <li><span><i class="fas fa-trash"></i></span>  Library trip</li>
+                                <li><span><i class="fas fa-trash"></i></span>  Luray trip</li>
+                                <li><span><i class="fas fa-trash"></i></span>  Look up houses</li>
                             </ul>
                         </div>
                     </div>
