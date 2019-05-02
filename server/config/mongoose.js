@@ -4,10 +4,12 @@ const fs = require('fs')
 const models = path.join(__dirname, '../models')
 
 /* connect (if not create a new) to our DATABASE */
-mongoose.connect('mongodb://test:test12345@ds117773.mlab.com:17773/todo-app', {
+// mongoose.connect('mongodb://test:test12345@ds117773.mlab.com:17773/todo-app', {
+//   useNewUrlParser: true
+// })
+mongoose.connect('mongodb+srv://admin:Password01@main-cluster-hpysy.mongodb.net/test?retryWrites=true', {
   useNewUrlParser: true
 })
-
 /* Loading the Schema "Model" available in the models folder */
 fs.readdirSync(models).forEach(function (file) {
   // console.log('From Mongoose.js --> Model Loaded: ' + file);
