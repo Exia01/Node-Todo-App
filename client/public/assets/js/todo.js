@@ -106,6 +106,11 @@ $('#render').on('click', 'li', function(e) {
   $(this).toggleClass('completed');
 });
 
+//deletes error when typing
+$("form input").change(function () {
+  $('#errors').remove();
+});
+
 // toggles the input
 $('span .fa-pen-square').click(function() {
   $('form').fadeToggle(1000);

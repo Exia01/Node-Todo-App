@@ -21,6 +21,7 @@ class TodoController {
 
     todo.save(err => {
       if (err) {
+        // console.log(err.errors)
         return res.status(403).json({
           error: err.errors,
           message: 'Failed to create Todo!'
