@@ -11,10 +11,10 @@ router.get('/todo', (req, res) => {
   res.render('todo');
 });
 
-/* API Semi-restful setup */
-router.get('/api/todos', TodoController.all);
+/* API Semi-restful setup  could move to separate if needed */
+router.get('/api/todos', TodoController.index);
 router.post('/api/todos', TodoController.create);
-router.delete('/api/todos/:id', TodoController.delete);
+router.delete('/api/todos/:_id', TodoController.delete);
 
 /* Catch all */
 router.all('*', (req, res) => {
