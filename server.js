@@ -6,10 +6,11 @@ const favicon           = require('express-favicon')
 const app               = express()
 const PORT              = 5000
 const mongooseConnector = require('./server/config/mongoose');
+const appRoutes         = require('./server/routes/index')
 
-/* Templating engine, views and static files  */
 // Middleware for forms
 app.use(bodyParser.urlencoded({ extended: true }))
+// Templating engine, views and static files 
 app.set('view engine', 'ejs')
 app.use(express.static(path.join(__dirname, '/client/public/assets')))
 app.use(favicon(path.join(__dirname, '/client/public/assets/favicon.png')))
@@ -26,10 +27,11 @@ mongooseConnector.mongooseConnection()
     console.log('ERROR in DB connection', err.message);
   });
 
-require('./server/config/routes')(app)
-/* imports mongoose from the mongoose.js */
+//implementing router
+app.use('/', appRoutes);
 
-/* Server */
+
+// Server 
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`)
 })
