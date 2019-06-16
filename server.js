@@ -4,7 +4,7 @@ const path              = require('path')
 const bodyParser        = require('body-parser')
 const favicon           = require('express-favicon')
 const app               = express()
-const PORT              = 8000
+const PORT              = process.env.PORT || 8000
 const mongooseConnector = require('./server/config/mongoose');
 const appRoutes         = require('./server/routes/index')
 
