@@ -32,7 +32,7 @@ $(document).ready(function() {
   }
 
   // /*  When clicking submit */
-  $("#main").on('submit', function(e) {
+  $("#main").submit(function(e) {
     e.preventDefault(e);
     /*     create a variable name item */
     let item = $("form input[type='text'");
