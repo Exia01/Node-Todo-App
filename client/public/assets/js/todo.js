@@ -1,5 +1,5 @@
 /* When document ready */
-"use strict"
+'use strict';
 $(document).ready(function() {
   $('#errors').hide();
   let todos;
@@ -30,9 +30,9 @@ $(document).ready(function() {
       }
     });
   }
-
+  let form = $("#main")
   // /*  When clicking submit */
-  jQuery("#main").on('submit', function(e) {
+  form.on('submit', function(e) {
     e.preventDefault(e);
     /*     create a variable name item */
     let item = $("form input[type='text'");
@@ -50,7 +50,7 @@ $(document).ready(function() {
           `<li id="${data._id}"><span><i class="fas fa-trash"></i></span> ${
             data.item
           }</li>`
-        );;
+        );
         $('form').trigger('reset');
         $('#errors').hide();
       },
@@ -63,8 +63,10 @@ $(document).ready(function() {
         }
         for (let key of generate(message)) {
           // console.log(key.error.item.message);
-          $('#errors').hide().html(`<p class="text-center">${key.error.item.message}</p`).fadeIn(1000);
-      
+          $('#errors')
+            .hide()
+            .html(`<p class="text-center">${key.error.item.message}</p`)
+            .fadeIn(1000);
         }
       }
     });
@@ -79,8 +81,8 @@ $(document).ready(function() {
     $.ajax({
       type: 'delete',
       url: `/api/todos/${_id}`,
-      success: function (data) {
-        console.log(data)
+      success: function(data) {
+        console.log(data);
         console.log('Deleted');
       },
       error: function(err) {
@@ -108,15 +110,16 @@ $('#render').on('click', 'li', function(e) {
 });
 
 //deletes error when typing
-$("form input").keyup(function () {
-  $('#errors').fadeOut(1000).remove();
+$('form input').keyup(function() {
+  $('#errors')
+    .fadeOut(1000)
+    .remove();
 });
 
 // toggles the input
 $('span .fa-pen-square').click(function() {
   $('form').fadeToggle(1000);
   $('#errors').fadeToggle(1000);
-
 });
 
 // I used this to figure out the this and e.id
