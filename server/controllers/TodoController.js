@@ -27,6 +27,7 @@ class TodoController {
         return res.status(200).json(todo);
       })
       .catch(err => {
+        // console.log(err)
         return res.status(403).json({
           error: err.errors,
           message: 'Failed to create Todo!'

@@ -107,8 +107,8 @@ $('#render').on('click', 'li', function(e) {
 });
 
 //deletes error when typing
-$("form input").change(function () {
-  $('#errors').remove();
+$("form input").keypress(function () {
+  $('#errors').fadeOut(1000);remove();
 });
 
 // toggles the input
