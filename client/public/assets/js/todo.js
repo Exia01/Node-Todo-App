@@ -107,7 +107,7 @@ $('#render').on('click', 'li', function(e) {
 });
 
 //deletes error when typing
-$("form input").keypress(function () {
+$("form input").keyup(function () {
   $('#errors').fadeOut(1000);remove();
 });
 
