@@ -32,7 +32,7 @@ $(document).ready(function() {
   }
 
   // /*  When clicking submit */
-  $("#main").submit(function(e) {
+  $("#main").on('submit', function(e) {
     e.preventDefault(e);
     /*     create a variable name item */
     let item = $("form input[type='text'");
@@ -109,7 +109,7 @@ $('#render').on('click', 'li', function(e) {
 
 //deletes error when typing
 $("form input").keyup(function () {
-  $('#errors').fadeOut(1000);remove();
+  $('#errors').fadeOut(1000).remove();
 });
 
 // toggles the input
