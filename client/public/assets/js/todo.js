@@ -1,4 +1,5 @@
 /* When document ready */
+"use strict"
 $(document).ready(function() {
   $('#errors').hide();
   let todos;
@@ -31,7 +32,7 @@ $(document).ready(function() {
   }
 
   // /*  When clicking submit */
-  $('form').on('submit', function(e) {
+  $("#main").on('submit', function(e) {
     e.preventDefault(e);
     /*     create a variable name item */
     let item = $("form input[type='text'");
