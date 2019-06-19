@@ -6,6 +6,7 @@ exports.todo_index = async () => {
     return todos
 }
 exports.todo_new = async (req) => {
+    console.log(req.body)
     const todo = new Todo(req.body).save()
     return todo;
 }
