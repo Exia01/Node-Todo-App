@@ -1,7 +1,10 @@
 'use strict';
 document.addEventListener('DOMContentLoaded', function() {
   let errorTag = document.getElementById('errors');
+  let renderTag = document.querySelector('#render');
+  let submitForm = document.querySelector('#main');
   errorTag.style.display = 'none';
+  errorTag.classList = 'hidden';
 
   //Todo INDEX
   let todo_index = (async () => {
@@ -13,46 +16,43 @@ document.addEventListener('DOMContentLoaded', function() {
   })();
 
   todo_index.then(result => {
-    // console.log(result.data)
-    let todos = result.data;
-    let renderTag = document.querySelector('#render')
-    todos.forEach(e => {
-      let liTag = document.createElement("li")
-      let spanTag = document.createElement("span")
-      let iTag = document.createElement("i")
-      iTag.setAttribute("class", `fas fa-trash`)
-      liTag.setAttribute("id", `${e._id}`)
-      spanTag.appendChild(iTag)
-      liTag.appendChild(spanTag)
-      liTag.appendChild(document.createTextNode( `${e.item}`))
-      renderTag.appendChild(liTag)
-
+      let todos = result.data;
+      //could implement maps and document fragment
+      todos.forEach(e => {
+        let tempTag = createLi(e)
+        renderTag.appendChild(tempTag);
+      });
+      addToggleListeners();
+    }).catch(err => {
+      console.log(err); // console.log(err.response)
+      if (err.response) {
+        // console.log(err.response.data);
+      }
+      let message = err.response.data;
+      function* generate(message) {
+        yield message;
+      }
+      for (let key of generate(message)) {
+        let newTag = document.createElement("h5")
+        newTag.setAttribute("class", "text-center")
+        newTag.appendChild(document.createTextNode(`${
+          key.error.item.message
+          }`))
+        errorTag.appendChild(newTag)
+      }
+      errorTag.style.display = 'block';
+      fadeIn(errorTag);
     });
-  }).catch(err => {
-    console.log(err); // console.log(err.response)
-        if (err.response) {
-          // console.log(err.response.data);
-        }
-        let message = err.response.data;
-        function* generate(message) {
-          yield message;
-        }
-        for (let key of generate(message)) {
-          output.innerHTML=`<h5 class="text-center">${key.error.item.message}</h5`
-          console.log(key)
-    }
-    fadeIn(errorTag)
-    errorTag.style.display = 'block';
-  });
 
   // Todo NEW
-  let submitForm = document.querySelector('#main');
-  let submitFormMethod = submitForm.method
   submitForm.addEventListener('submit', function (e) {
-    let submitFormData = new FormData(this)
+    errorTag.classList = "hidden"
+    let submitFormData = new FormData(this);
     let obj = {};
     //creating json obj from form
-    submitFormData.forEach((value, key) => {obj[key] = value});
+    submitFormData.forEach((value, key) => {
+      obj[key] = value;
+    });
     let data = JSON.stringify(obj);
     e.stopPropagation();
     e.preventDefault();
@@ -61,74 +61,76 @@ document.addEventListener('DOMContentLoaded', function() {
         accept: 'application/json',
         'Content-Type': 'application/json'
       },
-      data: {},
+      data: {}
     };
-    ; (async () => {
+    (async () => {
       let output = document.getElementById('errors');
       try {
-        const response = await axios.post('/api/todos',data,config)
-        console.log(response)
-        fadeOut(errorTag)
+        const response = await axios.post('/api/todos', data, config);
         errorTag.style.display = 'none';
+        let tempTag = createLi(response.data)
+        renderTag.appendChild(tempTag);
+        submitForm.reset()
       } catch (err) {
-        // console.log(err.response)
         if (err.response) {
-          // console.log(err.response.data);
+          console.log(err.response.data);
         }
         let message = err.response.data;
         function* generate(message) {
           yield message;
         }
         for (let key of generate(message)) {
-          output.innerHTML=`<h5 class="text-center">${key.error.item.message}</h5`
-          console.log(key)
+          let newTag = document.createElement("h5")
+          newTag.setAttribute("class", "text-center")
+          newTag.appendChild(document.createTextNode(`${
+            key.error.item.message
+            }`))
+          errorTag.appendChild(newTag)
         }
+        fadeInOrOut(errorTag)
         errorTag.style.display = 'block';
-        fadeIn(errorTag)
       }
-    })()
-  })
+    })();
+  });
 
+  // // Clear errors when typing
+  // submitForm.addEventListener('click', event => {
+  //   setTimeout(() => {
+  //     errorTag.classList = "hidden"
+  //   }, 3000);
+  //   // errorTag.removeChild(errorTag.getElementsByTagName('h5'));
+  // });
 
-
-
-  //Fade in animation
-  function fadeIn(el) {
-    el.style.opacity = 0;
-  
-    var last = +new Date();
-    var tick = function() {
-      el.style.opacity = +el.style.opacity + (new Date() - last) / 1000;
-      last = +new Date();
-  
-      if (+el.style.opacity < 1) {
-        (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
-      }
-    };
-  
-    tick();
+  //Compleete item click toggle
+  function addToggleListeners() {
+    let lis = document.querySelectorAll('li');
+    for (let tag of lis) {
+      tag.addEventListener('click', function() {
+        this.classList.toggle('completed');
+      });
+    }
   }
-  function fadeOut(el) {
-    el.style.opacity = 1;
-  
-    var last = +new Date();
-    var tick = function() {
-      el.style.opacity = +el.style.opacity + (new Date() - last) / 1000;
-      last = +new Date();
-  
-      if (+el.style.opacity > 0) {
-        (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
-      }
-    };
-  
-    tick();
+
+
+//Create Li Tag 
+  function createLi(obj) {
+    let liTag = document.createElement('li');
+    let spanTag = document.createElement('span');
+    let iTag = document.createElement('i');
+    iTag.setAttribute('class', `fas fa-trash`);
+    liTag.setAttribute('id', `${obj._id}`);
+    spanTag.appendChild(iTag);
+    liTag.appendChild(spanTag);
+    liTag.appendChild(document.createTextNode(`${obj.item}`));
+    return liTag
+}
+ function fadeInOrOut(el) {
+   el.classList === 'hidden' ? (el.classList.toggle("visible")) : (el.classList.toggle("hidden")) ; 
   }
-  
-})
-
-
-
-
+ function toggleError(el) {
+   el.classList === 'hidden' ? (el.classList.toggle("visible")) : (el.classList.toggle("hidden")) ; 
+  }
+});
 
 //How to format form obj to json
 //https://stackoverflow.com/questions/41431322/how-to-convert-formdatahtml5-object-to-json

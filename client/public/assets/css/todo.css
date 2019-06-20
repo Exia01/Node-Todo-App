@@ -10,8 +10,21 @@ body {
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     margin: 0 auto;
 }
-#errors{
+
+#errors {
     color: rgb(158, 4, 4);
+}
+
+.visible {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 2s linear;
+}
+
+.hidden {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 2s, opacity 2s linear;
 }
 
 .completed {
@@ -83,8 +96,8 @@ li:hover span {
 
 /* Medium devices (tablets, 768px and up) */
 
-@media (min-width: 992px){
-.container {
-    max-width: 540px;
-}
+@media (min-width: 992px) {
+    .container {
+        max-width: 540px;
+    }
 }
