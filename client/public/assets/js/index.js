@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
         let tempTag = createLi(e)
         renderTag.appendChild(tempTag);
       });
-      addToggleListeners();
     }).catch(err => {
       console.log(err); // console.log(err.response)
       if (err.response) {
@@ -64,13 +63,15 @@ document.addEventListener('DOMContentLoaded', function() {
       data: {}
     };
     (async () => {
-      let output = document.getElementById('errors');
+      let errToRemove = document.querySelector("h5") // removes the error tag
       try {
         const response = await axios.post('/api/todos', data, config);
         errorTag.style.display = 'none';
         let tempTag = createLi(response.data)
         renderTag.appendChild(tempTag);
+        errorTag.removeChild(errToRemove)
         submitForm.reset()
+
       } catch (err) {
         if (err.response) {
           console.log(err.response.data);
@@ -101,32 +102,40 @@ document.addEventListener('DOMContentLoaded', function() {
   //   // errorTag.removeChild(errorTag.getElementsByTagName('h5'));
   // });
 
-  //Compleete item click toggle
-  function addToggleListeners() {
-    let lis = document.querySelectorAll('li');
-    for (let tag of lis) {
-      tag.addEventListener('click', function() {
-        this.classList.toggle('completed');
-      });
-    }
-  }
-
-
-//Create Li Tag 
+  
+  
+  //Create Li Tag 
   function createLi(obj) {
     let liTag = document.createElement('li');
+    liTag.setAttribute("class", "incomplete")
     let spanTag = document.createElement('span');
     let iTag = document.createElement('i');
+    iTag.addEventListener("click", removeLi)
+    liTag.addEventListener("click", toggleListener)
     iTag.setAttribute('class', `fas fa-trash`);
     liTag.setAttribute('id', `${obj._id}`);
     spanTag.appendChild(iTag);
     liTag.appendChild(spanTag);
     liTag.appendChild(document.createTextNode(`${obj.item}`));
     return liTag
-}
+  }
+  //Compleete item click toggle
+  function toggleListener() {
+    if (this.classList == "incomplete") {
+      console.log("True")
+    }
+    console.log(this)
+    this.classList === 'incomplete' ? (this.classList= "complete"): (this.classList= "incomplete") ; 
+  }
+  //Remove Li Tag 
+  function removeLi() {
+    // console.log(this.parentNode.parentNode)
+  }
  function fadeInOrOut(el) {
    el.classList === 'hidden' ? (el.classList.toggle("visible")) : (el.classList.toggle("hidden")) ; 
   }
+
+  //not implemented yet
  function toggleError(el) {
    el.classList === 'hidden' ? (el.classList.toggle("visible")) : (el.classList.toggle("hidden")) ; 
   }
