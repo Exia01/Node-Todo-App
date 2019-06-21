@@ -8,4 +8,4 @@ Features:
 	*Connected to a MongoDB database through MongoDB Atlas.
 	*Backend custom validations implemented.
 	*Async service
-	*Ajax and Jquery used for dynamic content. 
+	*Vanilla javascript combine with axios for dynamic content. 
