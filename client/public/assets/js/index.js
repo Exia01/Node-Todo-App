@@ -173,9 +173,13 @@ function initialSetup(fadeInOrOut) {
   errorTag.style.display = 'none';
   iconTag.addEventListener("click", function () {
     fadeInOrOut(submitForm);
-    setTimeout(() => {
-      submitForm.style.display == "block" ? submitForm.style.display = "none" : submitForm.style.display = "block";
-    }, 1200);
+    if(submitForm.style.display == "block"){
+      setTimeout(() => {
+        submitForm.style.display = "none" 
+      }, 1500);
+    }else{
+      submitForm.style.display = "block";
+    }
   });
   //axios type config
   const config = {
