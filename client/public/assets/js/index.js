@@ -172,12 +172,15 @@ function initialSetup(fadeInOrOut) {
   submitForm.style.display = "block";
   errorTag.style.display = 'none';
   iconTag.addEventListener("click", function () {
-    fadeInOrOut(submitForm);
     if(submitForm.style.display == "block"){
+      fadeInOrOut(submitForm);
       setTimeout(() => {
         submitForm.style.display = "none" 
       }, 1500);
     }else{
+      setTimeout(() => {
+        fadeInOrOut(submitForm);
+      }, 200);
       submitForm.style.display = "block";
     }
   });
