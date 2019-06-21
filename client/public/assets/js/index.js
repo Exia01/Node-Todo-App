@@ -4,8 +4,15 @@ document.addEventListener('DOMContentLoaded', function() {
   let renderTag = document.querySelector('#render');
   let submitForm = document.querySelector('#main');
   errorTag.style.display = 'none';
-  errorTag.classList = 'hidden';
 
+  //axios type config
+  const config = {
+    headers: {
+      accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    data: {}
+  };
   //Todo INDEX
   let todo_index = (async () => {
     const response = await axios({
@@ -23,21 +30,12 @@ document.addEventListener('DOMContentLoaded', function() {
         renderTag.appendChild(tempTag);
       });
     }).catch(err => {
-      console.log(err); // console.log(err.response)
-      if (err.response) {
-        // console.log(err.response.data);
-      }
       let message = err.response.data;
       function* generate(message) {
         yield message;
       }
       for (let key of generate(message)) {
-        let newTag = document.createElement("h5")
-        newTag.setAttribute("class", "text-center")
-        newTag.appendChild(document.createTextNode(`${
-          key.error.item.message
-          }`))
-        errorTag.appendChild(newTag)
+        errorTag.appendChild(createErrorTag(key))
       }
       errorTag.style.display = 'block';
       fadeIn(errorTag);
@@ -45,7 +43,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Todo NEW
   submitForm.addEventListener('submit', function (e) {
-    errorTag.classList = "hidden"
+    e.stopPropagation();
+    e.preventDefault();
     let submitFormData = new FormData(this);
     let obj = {};
     //creating json obj from form
@@ -53,26 +52,20 @@ document.addEventListener('DOMContentLoaded', function() {
       obj[key] = value;
     });
     let data = JSON.stringify(obj);
-    e.stopPropagation();
-    e.preventDefault();
-    const config = {
-      headers: {
-        accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      data: {}
-    };
     (async () => {
       let errToRemove = document.querySelector("h5") // removes the error tag
+      if (errToRemove) {
+        errorTag.removeChild(errToRemove)
+      }
       try {
         const response = await axios.post('/api/todos', data, config);
-        errorTag.style.display = 'none';
+        errorTag.style.display = 'block';
         let tempTag = createLi(response.data)
         renderTag.appendChild(tempTag);
-        errorTag.removeChild(errToRemove)
         submitForm.reset()
-
       } catch (err) {
+        console.log(err)
+        errorTag.style.display = 'block';
         if (err.response) {
           console.log(err.response.data);
         }
@@ -81,18 +74,15 @@ document.addEventListener('DOMContentLoaded', function() {
           yield message;
         }
         for (let key of generate(message)) {
-          let newTag = document.createElement("h5")
-          newTag.setAttribute("class", "text-center")
-          newTag.appendChild(document.createTextNode(`${
-            key.error.item.message
-            }`))
+          let newTag = createErrorTag(key)
           errorTag.appendChild(newTag)
         }
-        fadeInOrOut(errorTag)
-        errorTag.style.display = 'block';
       }
     })();
   });
+
+  //TODO Destroy/Delete
+
 
   // // Clear errors when typing
   // submitForm.addEventListener('click', event => {
@@ -110,8 +100,8 @@ document.addEventListener('DOMContentLoaded', function() {
     liTag.setAttribute("class", "incomplete")
     let spanTag = document.createElement('span');
     let iTag = document.createElement('i');
-    iTag.addEventListener("click", removeLi)
     liTag.addEventListener("click", toggleListener)
+    spanTag.addEventListener("click", removeLi)
     iTag.setAttribute('class', `fas fa-trash`);
     liTag.setAttribute('id', `${obj._id}`);
     spanTag.appendChild(iTag);
@@ -119,31 +109,54 @@ document.addEventListener('DOMContentLoaded', function() {
     liTag.appendChild(document.createTextNode(`${obj.item}`));
     return liTag
   }
-  //Compleete item click toggle
+  function createErrorTag(obj) {
+    let newTag = document.createElement("h5")
+    newTag.setAttribute("class", "text-center")
+    newTag.classList.add('visible')
+    newTag.appendChild(document.createTextNode(`${
+      obj.error.item.message
+      }`))
+    return newTag
+  }
+
+
+
+/* Listeners */
+  
+  //Complete item click toggle
   function toggleListener() {
-    if (this.classList == "incomplete") {
-      console.log("True")
-    }
-    console.log(this)
-    this.classList === 'incomplete' ? (this.classList= "complete"): (this.classList= "incomplete") ; 
+    this.classList == 'incomplete' ? (this.classList= "completed"): (this.classList= "incomplete") ; 
   }
   //Remove Li Tag 
   function removeLi() {
-    // console.log(this.parentNode.parentNode)
-  }
- function fadeInOrOut(el) {
-   el.classList === 'hidden' ? (el.classList.toggle("visible")) : (el.classList.toggle("hidden")) ; 
+    console.log(this.parentNode.id)
+     let _id = this.parentNode.id
+    const deleteReq = async function() {
+      let response = await axios.delete(`/api/todos/${_id}`, config)
+      return response
+    }
+    deleteReq().then(data => {
+      console.log(data)
+    })
   }
 
-  //not implemented yet
- function toggleError(el) {
-   el.classList === 'hidden' ? (el.classList.toggle("visible")) : (el.classList.toggle("hidden")) ; 
+  function fadeInOrOut(el) {
+    if (el.classList.contains("hidden")) {
+      el.classList.remove("hidden")
+      el.classList.add("visible")
+    } else {
+      el.classList.remove("visible")
+      el.classList.add("hidden")
+    }
   }
 });
 
+
+
+
 //How to format form obj to json
 //https://stackoverflow.com/questions/41431322/how-to-convert-formdatahtml5-object-to-json
-
 // I used this to figure out the this and e.id
 /* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/is_not_iterable
  *https://stackoverflow.com/questions/957537/how-can-i-display-a-javascript-object */
+//Axios delete: https://stackoverflow.com/questions/51069552/axios-delete-request-with-body-and-headers

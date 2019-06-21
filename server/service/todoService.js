@@ -11,6 +11,7 @@ exports.todo_new = async (req) => {
     return todo;
 }
 exports.todo_delete = async (req) => {
+    console.log(req.params)
     const todo = await Todo.findByIdAndRemove(req.params._id);
     return todo
 }

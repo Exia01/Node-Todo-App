@@ -3,6 +3,7 @@ const path        = require('path');
 const fs          = require('fs');
 const models      = path.join(__dirname, '../models');
 
+mongoose.set('useFindAndModify', false);
 /* connect (if not create a new) to DATABASE */
 const mongooseConnection = async () => {
   await mongoose.connect(`mongodb+srv://admin:WVm6fwYgsLyvOvHl@main-cluster-hpysy.mongodb.net/test?retryWrites=true&w=majority`, {
