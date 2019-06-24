@@ -1,6 +1,6 @@
 'use strict';
 document.addEventListener('DOMContentLoaded', function () {
-  var { renderTag, errorTag, submitForm, config } = initialSetup(fadeInOrOut);
+  var {renderTag, errorTag, submitForm, config} = initialSetup(fadeInOrOut);
   //Todo INDEX
   let todo_index = async () => {
     const response = await axios({
@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     return response;
   };
+  
   todo_index().then(result => {
     let todos = result.data;
     //could implement maps and document fragment
@@ -50,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         let message = err.response.data;
         generaterErrors(message, errorTag, createErrorTag);
-        
+
       }
     })();
   });
@@ -172,12 +173,12 @@ function initialSetup(fadeInOrOut) {
   submitForm.style.display = "block";
   errorTag.style.display = 'none';
   iconTag.addEventListener("click", function () {
-    if(submitForm.style.display == "block"){
+    if (submitForm.style.display == "block") {
       fadeInOrOut(submitForm);
       setTimeout(() => {
-        submitForm.style.display = "none" 
+        submitForm.style.display = "none"
       }, 1500);
-    }else{
+    } else {
       setTimeout(() => {
         fadeInOrOut(submitForm);
       }, 200);
@@ -192,7 +193,7 @@ function initialSetup(fadeInOrOut) {
     },
     data: {}
   };
-  return { renderTag, errorTag, submitForm, config };
+  return {renderTag, errorTag, submitForm, config};
 }
 //How to format form obj to json
 //https://stackoverflow.com/questions/41431322/how-to-convert-formdatahtml5-object-to-json

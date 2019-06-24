@@ -20,8 +20,5 @@ router.delete('/api/todos/:_id', TodoController.delete);
 router.all('*', (req, res) => {
   res.sendFile(path.resolve('./client/public/views/page_404.html'));
 });
-router.all('*', (req, res) => {
-  res.sendFile(path.resolve('./client/public/views/page_404.html'));
-});
 
 module.exports = router;

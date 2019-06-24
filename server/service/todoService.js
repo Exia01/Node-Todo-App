@@ -1,5 +1,5 @@
 "use strict";
-    const Todo = require('mongoose').model('Todo')
+const Todo = require('mongoose').model('Todo')
 
 exports.todo_index = async () => {
     const todos = await Todo.find({})
