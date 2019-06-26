@@ -3,6 +3,7 @@ Simple Node/Express app.
 Allows users to create a Todo list. 
 
 Features:
+
 	*Full modularized app split in several components.
 	
 		-Routes, controller, model and mongoose connection. 
@@ -16,4 +17,4 @@ Features:
 	*Vanilla javascript combine with axios for dynamic content. 
 
 _____________________________________________________________________________________________________
-[Link](https://tst-todoapp.herokuapp.com)
+###[Link](https://tst-todoapp.herokuapp.com)###
